@@ -1,12 +1,10 @@
 #include "lab02/polynomial.hpp"
 
-#include <limits>
-#include <stdexcept>
 #include <utility>
 
 namespace lab02 {
 
-Polynomial::Polynomial() noexcept = default;
+Polynomial::Polynomial() = default;
 
 Polynomial::Polynomial(const double* coeffs, int degree) {
     if (degree == -1) {
@@ -33,12 +31,12 @@ Polynomial::Polynomial(const double* coeffs, int degree) {
 
 Polynomial::Polynomial(const Polynomial& other) : Polynomial(other.coeffs_, other.degree_) {}
 
-Polynomial::Polynomial(Polynomial&& other) noexcept : coeffs_(other.coeffs_), degree_(other.degree_) {
+Polynomial::Polynomial(Polynomial&& other) : coeffs_(other.coeffs_), degree_(other.degree_) {
     other.coeffs_ = nullptr;
     other.degree_ = -1;
 }
 
-void Polynomial::swap(Polynomial& other) noexcept {
+void Polynomial::swap(Polynomial& other) {
     std::swap(coeffs_, other.coeffs_);
     std::swap(degree_, other.degree_);
 }
@@ -52,11 +50,11 @@ Polynomial::~Polynomial() {
     delete[] coeffs_;
 }
 
-int Polynomial::degree() const noexcept {
+int Polynomial::degree() const {
     return degree_;
 }
 
-double Polynomial::coeff(std::size_t index) const noexcept {
+double Polynomial::coeff(std::size_t index) const {
     if (degree_ < 0.0 || index > static_cast<std::size_t>(degree_)) {
         return 0.0;
     }
@@ -110,10 +108,6 @@ void Polynomial::mul(const Polynomial& other) {
         Polynomial zero;
         swap(zero);
         return;
-    }
-
-    if (degree_ > std::numeric_limits<int>::max() - other.degree_) {
-        throw std::length_error("degree overflow");
     }
 
     Polynomial result;
